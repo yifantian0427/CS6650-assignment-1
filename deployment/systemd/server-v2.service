@@ -1,0 +1,17 @@
+[Unit]
+Description=CS6650 server-v2 (WebSocket producer)
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/opt/cs6650
+EnvironmentFile=-/etc/cs6650/server-v2.env
+ExecStart=/usr/bin/java -jar /opt/cs6650/server-v2.jar
+Restart=always
+RestartSec=2
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
+
