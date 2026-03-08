@@ -8,14 +8,37 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LoadTestMain {
 
+    private static final String DEFAULT_URL = "ws://localhost:8080/chat";
+
     public static void main(String[] args) throws Exception {
+        String baseUrl = DEFAULT_URL;
+        int numRooms = 20;
+        int numSenders = 20;
+        int numMessages = 2000;
+
+        for (int i = 0; i < args.length; i++) {
+            switch (args[i]) {
+                case "--serverUrl":
+                case "-s":
+                    if (i + 1 < args.length) baseUrl = args[++i];
+                    break;
+                case "--rooms":
+                    if (i + 1 < args.length) numRooms = Integer.parseInt(args[++i]);
+                    break;
+                case "--senders":
+                    if (i + 1 < args.length) numSenders = Integer.parseInt(args[++i]);
+                    break;
+                case "--messages":
+                    if (i + 1 < args.length) numMessages = Integer.parseInt(args[++i]);
+                    break;
+            }
+        }
+        // Normalize: ensure baseUrl ends with /chat (no room suffix)
+        baseUrl = baseUrl.replaceAll("/$", "");
+        if (!baseUrl.endsWith("/chat")) baseUrl = baseUrl + "/chat";
+
         System.out.println("=== PART2 MAIN START ===");
-
-        String baseUrl = "ws://localhost:8080/chat";
-
-        int numRooms = 100;        // rooms 1..100
-        int numSenders = 100;      // one sender per room (recommended)
-        int numMessages = 500000;
+        System.out.println("Server: " + baseUrl + " | Rooms: " + numRooms + " | Senders: " + numSenders + " | Messages: " + numMessages);
 
         // Metrics pipeline
         BlockingQueue<MetricRow> metricsQ = new LinkedBlockingQueue<>();

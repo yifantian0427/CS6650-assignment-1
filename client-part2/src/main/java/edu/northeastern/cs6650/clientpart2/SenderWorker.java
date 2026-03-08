@@ -10,6 +10,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SenderWorker implements Runnable {
 
@@ -22,6 +23,10 @@ public class SenderWorker implements Runnable {
 
     private final ObjectMapper mapper = new ObjectMapper();
     private final long ackTimeoutMs = 3000;
+
+    /** Only log first few server errors to stderr to avoid flood */
+    private static final AtomicInteger serverErrorLogCount = new AtomicInteger(0);
+    private static final int MAX_SERVER_ERROR_LOGS = 3;
 
     public SenderWorker(String baseUrl,
                         int roomId,
@@ -79,6 +84,7 @@ public class SenderWorker implements Runnable {
                 if (isSuccessAck(ack)) {
                     latencyTracker.recordSuccess(messageType, latency, roomId);
                 } else {
+                    logServerError(ack, roomId);
                     latencyTracker.recordServerError(messageType, latency, roomId);
                 }
             }
@@ -103,6 +109,20 @@ public class SenderWorker implements Runnable {
             return "SUCCESS".equalsIgnoreCase(status);
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    private void logServerError(String ackJson, int roomId) {
+        if (serverErrorLogCount.incrementAndGet() > MAX_SERVER_ERROR_LOGS) return;
+        try {
+            JsonNode root = mapper.readTree(ackJson);
+            String errorMsg = root.has("errorMessage") ? root.get("errorMessage").asText() : "(no errorMessage)";
+            System.err.println("[Server ERROR] roomId=" + roomId + " | errorMessage=" + errorMsg);
+            if (serverErrorLogCount.get() == 1) {
+                System.err.println("[Server ERROR] full response: " + ackJson);
+            }
+        } catch (Exception e) {
+            System.err.println("[Server ERROR] roomId=" + roomId + " | raw: " + ackJson);
         }
     }
 }
