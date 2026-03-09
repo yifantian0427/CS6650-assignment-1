@@ -23,16 +23,29 @@ public class InternalBroadcastController {
     }
 
     /**
-     * Body: { "roomId": "5", "payload": "<JSON string to send to all sessions in room>" }
+     * Supports both single map and list of maps for batching.
      */
+    @SuppressWarnings("unchecked")
     @PostMapping("/broadcast")
-    public ResponseEntity<Void> broadcast(@RequestBody Map<String, String> body) {
-        String roomId = body.get("roomId");
-        String payload = body.get("payload");
-        if (roomId == null || payload == null) {
+    public ResponseEntity<Void> broadcast(@RequestBody Object body) {
+        if (body instanceof java.util.List) {
+            java.util.List<Map<String, String>> batch = (java.util.List<Map<String, String>>) body;
+            for (Map<String, String> item : batch) {
+                processSingle(item);
+            }
+        } else if (body instanceof Map) {
+            processSingle((Map<String, String>) body);
+        } else {
             return ResponseEntity.badRequest().build();
         }
-        roomSessions.broadcast(roomId, payload);
         return ResponseEntity.ok().build();
+    }
+
+    private void processSingle(Map<String, String> item) {
+        String roomId = item.get("roomId");
+        String payload = item.get("payload");
+        if (roomId != null && payload != null) {
+            roomSessions.broadcast(roomId, payload);
+        }
     }
 }

@@ -69,43 +69,96 @@ public class QueueConsumerRunner {
     private void runConsumer(String queueName) {
         try {
             Channel channel = connection.createChannel();
-            channel.basicQos(properties.getConsumer().getPrefetchCount());
+            channel.basicQos(Math.max(100, properties.getConsumer().getPrefetchCount()));
+
+            final java.util.concurrent.BlockingQueue<Delivery> buffer = new java.util.concurrent.LinkedBlockingQueue<>();
+
+            // Batch processing thread
+            Thread batcher = new Thread(() -> {
+                while (true) {
+                    java.util.List<Delivery> currentBatch = new java.util.ArrayList<>();
+                    try {
+                        Delivery first = buffer.poll(100, java.util.concurrent.TimeUnit.MILLISECONDS);
+                        if (first != null) {
+                            currentBatch.add(first);
+                            buffer.drainTo(currentBatch, 49); // Max batch size 50
+                        }
+                    } catch (InterruptedException e) {
+                        break;
+                    }
+
+                    if (currentBatch.isEmpty()) continue;
+
+                    java.util.List<Map<String, String>> broadcastBatch = new java.util.ArrayList<>();
+                    for (Delivery delivery : currentBatch) {
+                        try {
+                            String body = new String(delivery.getBody(), StandardCharsets.UTF_8);
+                            QueueMessage msg = objectMapper.readValue(body, QueueMessage.class);
+                            String roomId = msg.roomId != null ? msg.roomId : queueName.replace("room.", "");
+                            
+                            if (deduplicator.shouldProcess(roomId, msg.messageId)) {
+                                Map<String, Object> broadcast = new HashMap<>();
+                                broadcast.put("status", "SUCCESS");
+                                broadcast.put("serverTimestamp", java.time.Instant.now().toString());
+                                broadcast.put("roomId", roomId);
+                                Map<String, Object> original = new HashMap<>();
+                                original.put("userId", msg.userId);
+                                original.put("username", msg.username);
+                                original.put("message", msg.message);
+                                original.put("timestamp", msg.timestamp);
+                                original.put("messageType", msg.messageType);
+                                broadcast.put("originalMessage", original);
+
+                                Map<String, String> item = new HashMap<>();
+                                item.put("roomId", roomId);
+                                item.put("payload", objectMapper.writeValueAsString(broadcast));
+                                broadcastBatch.add(item);
+                            }
+                        } catch (Exception e) {
+                            log.warn("Error parsing message for batch: {}", e.getMessage());
+                        }
+                    }
+
+                    if (!broadcastBatch.isEmpty()) {
+                        boolean allOk = broadcastClient.broadcastBatch(broadcastBatch);
+                        if (allOk) {
+                            // Ack all in batch
+                            for (Delivery delivery : currentBatch) {
+                                try {
+                                    channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+                                } catch (IOException e) {
+                                    log.error("Failed to ack message in {}: {}", queueName, e.getMessage());
+                                }
+                            }
+                        } else {
+                            log.warn("Batch broadcast failed for {} items in {}. Requeueing.", broadcastBatch.size(), queueName);
+                            // Nack all in batch and requeue
+                            for (Delivery delivery : currentBatch) {
+                                try {
+                                    channel.basicNack(delivery.getEnvelope().getDeliveryTag(), false, true);
+                                } catch (IOException e) {
+                                    log.error("Failed to nack message in {}: {}", queueName, e.getMessage());
+                                }
+                            }
+                        }
+                    } else {
+                        // All messages were either empty (parse error) or duplicates. 
+                        // Still need to ack them so they don't stay in MQ.
+                        for (Delivery delivery : currentBatch) {
+                            try {
+                                channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+                            } catch (IOException e) {
+                                log.error("Failed to ack message in {}: {}", queueName, e.getMessage());
+                            }
+                        }
+                    }
+                }
+            });
+            batcher.setDaemon(true);
+            batcher.start();
 
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-                try {
-                    String body = new String(delivery.getBody(), StandardCharsets.UTF_8);
-                    QueueMessage msg = objectMapper.readValue(body, QueueMessage.class);
-                    String roomId = msg.roomId != null ? msg.roomId : queueName.replace("room.", "");
-                    if (!deduplicator.shouldProcess(roomId, msg.messageId)) {
-                        channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
-                        return;
-                    }
-
-                    Map<String, Object> broadcast = new HashMap<>();
-                    broadcast.put("status", "SUCCESS");
-                    broadcast.put("serverTimestamp", java.time.Instant.now().toString());
-                    broadcast.put("roomId", roomId);
-                    Map<String, Object> original = new HashMap<>();
-                    original.put("userId", msg.userId);
-                    original.put("username", msg.username);
-                    original.put("message", msg.message);
-                    original.put("timestamp", msg.timestamp);
-                    original.put("messageType", msg.messageType);
-                    broadcast.put("originalMessage", original);
-
-                    String payload = objectMapper.writeValueAsString(broadcast);
-                    boolean allOk = broadcastClient.broadcastToRoom(roomId, payload);
-                    if (!allOk) {
-                        throw new IOException("broadcast failed to one or more servers");
-                    }
-
-                    channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
-                } catch (Exception e) {
-                    log.warn("Error processing message from {}: {}", queueName, e.getMessage());
-                    try {
-                        channel.basicNack(delivery.getEnvelope().getDeliveryTag(), false, true);
-                    } catch (IOException ignored) {}
-                }
+                buffer.offer(delivery);
             };
 
             channel.basicConsume(queueName, false, deliverCallback, tag -> {});

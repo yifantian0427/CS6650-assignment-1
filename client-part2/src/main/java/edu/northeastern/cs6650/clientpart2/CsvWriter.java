@@ -23,6 +23,7 @@ public class CsvWriter implements Runnable {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
             bw.write("timestamp,messageType,latency,statusCode,roomId\n");
 
+            int count = 0;
             while (true) {
                 MetricRow row = queue.poll(500, TimeUnit.MILLISECONDS);
                 if (row == null) {
@@ -30,6 +31,9 @@ public class CsvWriter implements Runnable {
                     continue;
                 }
                 bw.write(row.timestampMs + "," + row.messageType + "," + row.latencyMs + "," + row.statusCode + "," + row.roomId + "\n");
+                if (++count % 2000 == 0) {
+                    bw.flush();
+                }
             }
             bw.flush();
         } catch (Exception e) {

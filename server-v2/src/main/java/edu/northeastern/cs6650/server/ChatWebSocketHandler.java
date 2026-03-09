@@ -47,46 +47,79 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String roomId = safeRoomId(session);
+        String payload = message.getPayload();
 
         try {
-            ChatMessage chatMessage =
-                    objectMapper.readValue(message.getPayload(), ChatMessage.class);
+            if (payload.trim().startsWith("[")) {
+                // Batch processing
+                java.util.List<ChatMessage> batch = objectMapper.readValue(payload, 
+                        objectMapper.getTypeFactory().constructCollectionType(java.util.List.class, ChatMessage.class));
+                
+                java.util.List<QueueMessage> queueMsgs = new java.util.ArrayList<>();
+                String ip = (session.getRemoteAddress() != null) ? session.getRemoteAddress().toString() : "unknown";
+                for (ChatMessage chatMessage : batch) {
+                    String validationError = ChatValidator.validate(chatMessage);
+                    if (validationError != null) {
+                        sendError(session, "Validation failed in batch: " + validationError);
+                        return;
+                    }
+                    queueMsgs.add(convertToQueueMessage(chatMessage, roomId, ip));
+                }
 
-            String validationError = ChatValidator.validate(chatMessage);
-            if (validationError != null) {
-                sendError(session, validationError);
-                return;
-            }
-
-            QueueMessage queueMsg = new QueueMessage();
-            queueMsg.messageId = UUID.randomUUID().toString();
-            queueMsg.roomId = roomId;
-            queueMsg.userId = String.valueOf(chatMessage.userId);
-            queueMsg.username = chatMessage.username;
-            queueMsg.message = chatMessage.message;
-            queueMsg.timestamp = chatMessage.timestamp;
-            queueMsg.messageType = chatMessage.messageType;
-            queueMsg.serverId = serverId;
-            queueMsg.clientIp = session.getRemoteAddress() != null
-                    ? session.getRemoteAddress().getAddress().getHostAddress()
-                    : "unknown";
-
-            boolean published = queuePublisher.publish(queueMsg);
-
-            if (published) {
-                Map<String, Object> response = new HashMap<>();
-                response.put("status", "SUCCESS");
-                response.put("serverTimestamp", Instant.now().toString());
-                response.put("roomId", roomId);
-                response.put("originalMessage", chatMessage);
-                if (session.isOpen()) {
-                    session.sendMessage(new TextMessage(objectMapper.writeValueAsString(response)));
+                if (!queuePublisher.publishBatch(queueMsgs)) {
+                    sendError(session, "Queue unavailable (Batch)");
+                } else {
+                    sendAck(session, roomId, "BATCH_SUCCESS", batch.size()); // Reverted to sendAck to maintain existing method signature
                 }
             } else {
-                sendError(session, "Queue unavailable");
+                // Single message
+                ChatMessage chatMsg = objectMapper.readValue(payload, ChatMessage.class);
+                String validationError = ChatValidator.validate(chatMsg);
+                if (validationError != null) {
+                    sendError(session, validationError);
+                    return;
+                }
+                String ip = (session.getRemoteAddress() != null) ? session.getRemoteAddress().toString() : "unknown";
+                QueueMessage queueMsg = convertToQueueMessage(chatMsg, roomId, ip); // Corrected variable name from qMsg to queueMsg and chatMessage to chatMsg
+                boolean published = queuePublisher.publish(queueMsg);
+
+                if (published) {
+                    sendAck(session, roomId, "SUCCESS", 1);
+                } else {
+                    sendError(session, "Queue unavailable");
+                }
             }
         } catch (Exception e) {
-            sendError(session, "Invalid JSON format");
+            System.err.println("Error processing message from room " + roomId + ": " + e.getMessage());
+            e.printStackTrace();
+            sendError(session, "Invalid format: " + e.getMessage());
+        }
+    }
+
+    private QueueMessage convertToQueueMessage(ChatMessage chatMessage, String roomId, String ip) {
+        QueueMessage queueMsg = new QueueMessage();
+        queueMsg.messageId = UUID.randomUUID().toString();
+        queueMsg.roomId = roomId;
+        queueMsg.userId = String.valueOf(chatMessage.userId);
+        queueMsg.username = chatMessage.username;
+        queueMsg.message = chatMessage.message;
+        queueMsg.timestamp = chatMessage.timestamp;
+        queueMsg.messageType = chatMessage.messageType;
+        queueMsg.serverId = serverId;
+        queueMsg.clientIp = ip;
+        return queueMsg;
+    }
+
+    private void sendAck(WebSocketSession session, String roomId, String status, int count) throws Exception {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", status);
+        response.put("serverTimestamp", Instant.now().toString());
+        response.put("roomId", roomId);
+        response.put("count", count);
+        synchronized (session) {
+            if (session.isOpen()) {
+                session.sendMessage(new TextMessage(objectMapper.writeValueAsString(response)));
+            }
         }
     }
 
@@ -96,8 +129,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         response.put("serverTimestamp", Instant.now().toString());
         response.put("errorMessage", error);
 
-        if (session != null && session.isOpen()) {
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(response)));
+        if (session != null) {
+            synchronized (session) {
+                if (session.isOpen()) {
+                    session.sendMessage(new TextMessage(objectMapper.writeValueAsString(response)));
+                }
+            }
         }
     }
 

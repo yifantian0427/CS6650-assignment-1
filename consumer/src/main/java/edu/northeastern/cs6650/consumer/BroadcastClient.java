@@ -34,28 +34,51 @@ public class BroadcastClient {
     /**
      * @return true if all configured servers accepted the broadcast
      */
-    public boolean broadcastToRoom(String roomId, String payload) {
+    public boolean broadcastBatch(List<Map<String, String>> batch) {
         List<String> urls = properties.getServers().getUrlList();
         if (urls.isEmpty()) {
             log.warn("No server URLs configured for broadcast");
             return false;
         }
+
+        // Use parallelStream to hit all servers concurrently
+        // This ensures broadcast time doesn't scale linearly with server count
+        return urls.parallelStream().allMatch(baseUrl -> {
+            String url = baseUrl.replaceAll("/$", "") + "/internal/broadcast";
+            try {
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                restTemplate.postForEntity(url, new HttpEntity<>(batch, headers), Void.class);
+                return true;
+            } catch (Exception e) {
+                log.warn("Batch broadcast to {} failed: {}", url, e.getMessage());
+                return false;
+            }
+        });
+    }
+
+    public boolean broadcastToRoom(String roomId, String payload) {
         Map<String, String> body = new HashMap<>();
         body.put("roomId", roomId);
         body.put("payload", payload);
 
-        boolean allOk = true;
-        for (String baseUrl : urls) {
+        List<String> urls = properties.getServers().getUrlList();
+        if (urls.isEmpty()) {
+            log.warn("No server URLs configured for broadcast");
+            return false;
+        }
+
+        return urls.parallelStream().allMatch(baseUrl -> {
             String url = baseUrl.replaceAll("/$", "") + "/internal/broadcast";
             try {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
                 restTemplate.postForEntity(url, new HttpEntity<>(body, headers), Void.class);
+                return true;
             } catch (Exception e) {
-                log.debug("Broadcast to {} failed: {}", url, e.getMessage());
-                allOk = false;
+                log.warn("Broadcast to {} failed: {}", url, e.getMessage());
+                return false;
             }
-        }
-        return allOk;
+        });
     }
 }

@@ -14,31 +14,50 @@ public class LoadTestMain {
         String baseUrl = DEFAULT_URL;
         int numRooms = 20;
         int numSenders = 20;
-        int numMessages = 2000;
+        int batchSize = 10;
+        int delayMs = 50;
+        int numMessages = 500000;
 
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
                 case "--serverUrl":
                 case "-s":
-                    if (i + 1 < args.length) baseUrl = args[++i];
+                    if (i + 1 < args.length)
+                        baseUrl = args[++i];
                     break;
                 case "--rooms":
-                    if (i + 1 < args.length) numRooms = Integer.parseInt(args[++i]);
+                    if (i + 1 < args.length)
+                        numRooms = Integer.parseInt(args[++i]);
                     break;
                 case "--senders":
-                    if (i + 1 < args.length) numSenders = Integer.parseInt(args[++i]);
+                    if (i + 1 < args.length)
+                        numSenders = Integer.parseInt(args[++i]);
                     break;
                 case "--messages":
-                    if (i + 1 < args.length) numMessages = Integer.parseInt(args[++i]);
+                    if (i + 1 < args.length)
+                        numMessages = Integer.parseInt(args[++i]);
+                    break;
+                case "--batch":
+                case "-b":
+                    if (i + 1 < args.length)
+                        batchSize = Integer.parseInt(args[++i]);
+                    break;
+                case "--delay":
+                case "-d":
+                    if (i + 1 < args.length)
+                        delayMs = Integer.parseInt(args[++i]);
                     break;
             }
         }
         // Normalize: ensure baseUrl ends with /chat (no room suffix)
         baseUrl = baseUrl.replaceAll("/$", "");
-        if (!baseUrl.endsWith("/chat")) baseUrl = baseUrl + "/chat";
+        if (!baseUrl.endsWith("/chat"))
+            baseUrl = baseUrl + "/chat";
 
         System.out.println("=== PART2 MAIN START ===");
-        System.out.println("Server: " + baseUrl + " | Rooms: " + numRooms + " | Senders: " + numSenders + " | Messages: " + numMessages);
+        System.out
+                .println(String.format("Server: %s | Rooms: %d | Senders: %d | Messages: %d | Batch: %d | Delay: %dms",
+                        baseUrl, numRooms, numSenders, numMessages, batchSize, delayMs));
 
         // Metrics pipeline
         BlockingQueue<MetricRow> metricsQ = new LinkedBlockingQueue<>();
@@ -51,7 +70,8 @@ public class LoadTestMain {
 
         // One queue per room
         List<BlockingQueue<ChatMessage>> roomQueues = new ArrayList<>(numRooms);
-        for (int i = 0; i < numRooms; i++) roomQueues.add(new LinkedBlockingQueue<>());
+        for (int i = 0; i < numRooms; i++)
+            roomQueues.add(new LinkedBlockingQueue<>());
 
         AtomicBoolean doneProducing = new AtomicBoolean(false);
 
@@ -66,18 +86,40 @@ public class LoadTestMain {
                     roomId,
                     roomQueues.get(roomId - 1),
                     doneProducing,
-                    latencyTracker
-            ));
+                    latencyTracker,
+                    batchSize,
+                    delayMs));
             t.start();
             senders.add(t);
         }
 
+        final int totalMessagesToDeliver = numMessages;
         // Produce messages into the correct room queue
-        Thread generator = new Thread(new MessageGenerator(roomQueues, numRooms, numMessages, doneProducing));
+        Thread generator = new Thread(
+                new MessageGenerator(roomQueues, numRooms, totalMessagesToDeliver, doneProducing));
         generator.start();
 
+        // Progress monitor
+        Thread monitor = new Thread(() -> {
+            try {
+                while (!doneProducing.get() || roomQueues.stream().anyMatch(q -> !q.isEmpty())) {
+                    Thread.sleep(2000);
+                    int success = SenderWorker.totalSuccess.get();
+                    int retries = SenderWorker.totalRetries.get();
+                    System.out.println(String.format("[Progress] Sent: %d / %d | Retries: %d", success,
+                            totalMessagesToDeliver, retries));
+                    if (success >= totalMessagesToDeliver)
+                        break;
+                }
+            } catch (InterruptedException ignored) {
+            }
+        });
+        monitor.setDaemon(true);
+        monitor.start();
+
         generator.join();
-        for (Thread t : senders) t.join();
+        for (Thread t : senders)
+            t.join();
 
         long end = System.currentTimeMillis();
 

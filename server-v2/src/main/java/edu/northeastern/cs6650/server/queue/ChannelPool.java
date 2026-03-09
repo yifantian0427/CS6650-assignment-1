@@ -66,7 +66,7 @@ public class ChannelPool {
                 }
                 log.info("Channel pool initialized with {} channels", size);
             } catch (Exception e) {
-                log.error("Failed to initialize channel pool", e);
+                log.error("Failed to initialize channel pool (host: {}, port: {})", config.getHost(), config.getPort(), e);
                 circuitBreaker.recordFailure();
                 // Graceful: allow server to start even if queue is down.
                 // Publisher will fail until we can reconnect.

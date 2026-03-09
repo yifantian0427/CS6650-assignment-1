@@ -17,6 +17,8 @@ public class RoomSessionRegistry {
 
     private final ConcurrentHashMap<String, Set<WebSocketSession>> rooms = new ConcurrentHashMap<>();
 
+    private final java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newFixedThreadPool(100);
+
     public void addSession(String roomId, WebSocketSession session) {
         rooms.computeIfAbsent(roomId, k -> Collections.newSetFromMap(new ConcurrentHashMap<>()))
                 .add(session);
@@ -35,15 +37,27 @@ public class RoomSessionRegistry {
     /** Broadcast payload (JSON string) to all sessions in the room. */
     public void broadcast(String roomId, String payload) {
         Set<WebSocketSession> sessions = rooms.getOrDefault(roomId, Collections.emptySet());
+        if (sessions.isEmpty()) return;
+
         TextMessage message = new TextMessage(payload);
         for (WebSocketSession s : sessions) {
             if (s != null && s.isOpen()) {
-                try {
-                    s.sendMessage(message);
-                } catch (Exception ignored) {
-                    // Session may be closed; cleanup happens in handler
-                }
+                executor.submit(() -> {
+                    try {
+                        synchronized (s) {
+                            if (s.isOpen()) {
+                                s.sendMessage(message);
+                            }
+                        }
+                    } catch (Exception ignored) {
+                    }
+                });
             }
         }
+    }
+    
+    @jakarta.annotation.PreDestroy
+    public void shutdown() {
+        executor.shutdown();
     }
 }

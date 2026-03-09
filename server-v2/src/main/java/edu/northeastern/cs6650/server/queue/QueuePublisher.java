@@ -31,45 +31,78 @@ public class QueuePublisher {
     }
 
     /**
-     * Publish a message to the queue. Returns true if published successfully.
+     * Publish a single message and wait for confirm if enabled.
      */
     public boolean publish(QueueMessage msg) {
-        if (!circuitBreaker.allowRequest()) {
-            log.debug("Circuit open, skipping publish");
-            return false;
-        }
+        if (!circuitBreaker.allowRequest()) return false;
+        
         Channel channel = channelPool.borrowChannel();
         if (channel == null) {
             circuitBreaker.recordFailure();
             return false;
         }
         try {
-            String routingKey = config.getRoutingKeyPrefix() + msg.roomId;
-            String json = objectMapper.writeValueAsString(msg);
-            AMQP.BasicProperties props = new AMQP.BasicProperties.Builder()
-                    .deliveryMode(2)
-                    .contentType("application/json")
-                    .build();
-            channel.basicPublish(
-                    config.getExchangeName(),
-                    routingKey,
-                    props,
-                    json.getBytes(StandardCharsets.UTF_8)
-            );
+            publishSingle(channel, msg);
             if (config.isPublisherConfirms()) {
-                boolean ok = channel.waitForConfirms(5000);
-                if (!ok) {
-                    throw new IOException("publisher confirm failed");
+                if (!channel.waitForConfirms(5000)) {
+                    throw new IOException("Publisher confirm failed");
                 }
             }
             circuitBreaker.recordSuccess();
             return true;
         } catch (Exception e) {
-            log.warn("Publish failed: {}", e.getMessage());
+            log.warn("Publish failed", e);
             circuitBreaker.recordFailure();
             return false;
         } finally {
             channelPool.returnChannel(channel);
         }
+    }
+
+    /**
+     * Publish a batch of messages and wait for a single confirm for the whole batch.
+     */
+    public boolean publishBatch(java.util.List<QueueMessage> messages) {
+        if (messages == null || messages.isEmpty()) return true;
+        if (!circuitBreaker.allowRequest()) return false;
+
+        Channel channel = channelPool.borrowChannel();
+        if (channel == null) {
+            circuitBreaker.recordFailure();
+            return false;
+        }
+        try {
+            for (QueueMessage msg : messages) {
+                publishSingle(channel, msg);
+            }
+            if (config.isPublisherConfirms()) {
+                if (!channel.waitForConfirms(5000)) {
+                    throw new IOException("Batch publisher confirm failed");
+                }
+            }
+            circuitBreaker.recordSuccess();
+            return true;
+        } catch (Exception e) {
+            log.warn("Batch publish failed (size={})", messages.size(), e);
+            circuitBreaker.recordFailure();
+            return false;
+        } finally {
+            channelPool.returnChannel(channel);
+        }
+    }
+
+    private void publishSingle(Channel channel, QueueMessage msg) throws IOException {
+        String routingKey = config.getRoutingKeyPrefix() + msg.roomId;
+        String json = objectMapper.writeValueAsString(msg);
+        AMQP.BasicProperties props = new AMQP.BasicProperties.Builder()
+                .deliveryMode(2)
+                .contentType("application/json")
+                .build();
+        channel.basicPublish(
+                config.getExchangeName(),
+                routingKey,
+                props,
+                json.getBytes(StandardCharsets.UTF_8)
+        );
     }
 }
