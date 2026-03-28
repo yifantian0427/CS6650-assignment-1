@@ -1,0 +1,13 @@
+=== PART2 MAIN START ===
+Server: ws://localhost:8080/chat | Rooms: 20 | Senders: 20 | Messages: 1000000 | Batch: 100 | Delay: 20ms
+SLF4J: No SLF4J providers were found.
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See https://www.slf4j.org/codes.html#noProviders for further details.
+[Progress] Sent: 162100 / 1000000 | Retries: 0
+[Progress] Sent: 342000 / 1000000 | Retries: 0
+[Progress] Sent: 522300 / 1000000 | Retries: 0
+[Progress] Sent: 703300 / 1000000 | Retries: 0
+[Progress] Sent: 884900 / 1000000 | Retries: 0
+=== PART2 MAIN DONE ===
+Wall time (ms): 11535
+CSV written: results_part2.csv

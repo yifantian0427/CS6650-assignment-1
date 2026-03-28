@@ -1,0 +1,17 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+[32m :: Spring Boot :: [39m              [2m (v3.2.5)[0;39m
+
+[2m2026-03-27T14:25:48.947-07:00[0;39m [32m INFO[0;39m [35m19991[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36me.n.c.consumerv3.ConsumerV3Application  [0;39m [2m:[0;39m Starting ConsumerV3Application v1.0-SNAPSHOT using Java 23.0.1 with PID 19991 (/Users/yifantian/CS 6650/cs6650 assignment1/consumer-v3/target/consumer-v3-1.0-SNAPSHOT.jar started by yifantian in /Users/yifantian/CS 6650/cs6650 assignment1/load-tests)
+[2m2026-03-27T14:25:48.948-07:00[0;39m [32m INFO[0;39m [35m19991[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36me.n.c.consumerv3.ConsumerV3Application  [0;39m [2m:[0;39m No active profile set, falling back to 1 default profile: "default"
+[2m2026-03-27T14:25:49.274-07:00[0;39m [32m INFO[0;39m [35m19991[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36me.n.c.consumerv3.PersistenceService     [0;39m [2m:[0;39m Persistence writers started: 4
+[2m2026-03-27T14:25:49.451-07:00[0;39m [32m INFO[0;39m [35m19991[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36me.n.c.consumerv3.ConsumerV3Application  [0;39m [2m:[0;39m Started ConsumerV3Application in 0.678 seconds (process running for 0.859)
+[2m2026-03-27T14:25:49.484-07:00[0;39m [32m INFO[0;39m [35m19991[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36me.n.c.consumerv3.QueueConsumerRunnerV3  [0;39m [2m:[0;39m consumer-v3 started for room.1..room.20
+[2m2026-03-27T14:25:53.925-07:00[0;39m [32m INFO[0;39m [35m19991[0;39m [2m---[0;39m [2m[pool-2-thread-2][0;39m [2m[0;39m[36mcom.zaxxer.hikari.HikariDataSource      [0;39m [2m:[0;39m HikariPool-1 - Starting...
+[2m2026-03-27T14:25:54.006-07:00[0;39m [32m INFO[0;39m [35m19991[0;39m [2m---[0;39m [2m[pool-2-thread-2][0;39m [2m[0;39m[36mcom.zaxxer.hikari.pool.HikariPool       [0;39m [2m:[0;39m HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5acc69a3
+[2m2026-03-27T14:25:54.007-07:00[0;39m [32m INFO[0;39m [35m19991[0;39m [2m---[0;39m [2m[pool-2-thread-2][0;39m [2m[0;39m[36mcom.zaxxer.hikari.HikariDataSource      [0;39m [2m:[0;39m HikariPool-1 - Start completed.

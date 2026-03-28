@@ -8,6 +8,7 @@ Scripts and tools for queue and system metrics (Assignment 2).
   - `queue-depth.sh` – Poll RabbitMQ management API for queue depths over time
   - `consumer-lag.sh` – Consumer lag metrics
   - `collect-metrics.sh` – Run load test and collect client + queue + system metrics
+  - `db-metrics.sh` – Sample PostgreSQL transaction, connection, lock-wait metrics
 
 ## Quick usage
 
@@ -33,6 +34,13 @@ chmod +x *.sh
   --rooms 20 --interval 2 \
   --client-cmd "<your client command>" \
   --out-dir run1
+```
+
+### Database metrics (CSV)
+
+```bash
+PGHOST=<DB_HOST> PGPORT=5432 PGUSER=chat PGDATABASE=chatdb \
+  ./db-metrics.sh
 ```
 
 ## Metrics to Collect

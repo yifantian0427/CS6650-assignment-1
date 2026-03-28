@@ -5,6 +5,12 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 
 public class LoadTestMain {
 
@@ -17,6 +23,7 @@ public class LoadTestMain {
         int batchSize = 10;
         int delayMs = 50;
         int numMessages = 500000;
+        String metricsApiBase = "";
 
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
@@ -46,6 +53,10 @@ public class LoadTestMain {
                 case "-d":
                     if (i + 1 < args.length)
                         delayMs = Integer.parseInt(args[++i]);
+                    break;
+                case "--metricsApi":
+                    if (i + 1 < args.length)
+                        metricsApiBase = args[++i];
                     break;
             }
         }
@@ -129,5 +140,27 @@ public class LoadTestMain {
         System.out.println("=== PART2 MAIN DONE ===");
         System.out.println("Wall time (ms): " + (end - start));
         System.out.println("CSV written: " + csvPath);
+
+        if (metricsApiBase != null && !metricsApiBase.isBlank()) {
+            fetchAndPrintMetrics(metricsApiBase, numMessages);
+        }
+    }
+
+    private static void fetchAndPrintMetrics(String base, int numMessages) {
+        try {
+            String clean = base.replaceAll("/$", "");
+            String start = URLEncoder.encode(java.time.Instant.now().minusSeconds(3600).toString(), StandardCharsets.UTF_8);
+            String end = URLEncoder.encode(java.time.Instant.now().toString(), StandardCharsets.UTF_8);
+            String url = clean + "/api/metrics/summary?roomId=1&userId=1000&startTime=" + start + "&endTime=" + end + "&topN=10";
+            HttpRequest req = HttpRequest.newBuilder(URI.create(url)).GET().build();
+            HttpResponse<String> resp = HttpClient.newHttpClient().send(req, HttpResponse.BodyHandlers.ofString());
+            System.out.println("=== ASSIGNMENT3 METRICS API ===");
+            System.out.println("Request URL: " + url);
+            System.out.println("Load messages: " + numMessages);
+            System.out.println("HTTP " + resp.statusCode());
+            System.out.println(resp.body());
+        } catch (Exception e) {
+            System.err.println("Failed to fetch metrics API: " + e.getMessage());
+        }
     }
 }

@@ -1,0 +1,32 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+[32m :: Spring Boot :: [39m              [2m (v3.2.5)[0;39m
+
+[2m2026-03-27T11:47:02.985-07:00[0;39m [32m INFO[0;39m [35m9383[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36me.n.c.consumerv3.ConsumerV3Application  [0;39m [2m:[0;39m Starting ConsumerV3Application v1.0-SNAPSHOT using Java 23.0.1 with PID 9383 (/Users/yifantian/CS 6650/cs6650 assignment1/consumer-v3/target/consumer-v3-1.0-SNAPSHOT.jar started by yifantian in /Users/yifantian/CS 6650/cs6650 assignment1)
+[2m2026-03-27T11:47:02.986-07:00[0;39m [32m INFO[0;39m [35m9383[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36me.n.c.consumerv3.ConsumerV3Application  [0;39m [2m:[0;39m No active profile set, falling back to 1 default profile: "default"
+[2m2026-03-27T11:47:03.334-07:00[0;39m [32m INFO[0;39m [35m9383[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36me.n.c.consumerv3.PersistenceService     [0;39m [2m:[0;39m Persistence writers started: 4
+[2m2026-03-27T11:47:03.545-07:00[0;39m [32m INFO[0;39m [35m9383[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36me.n.c.consumerv3.ConsumerV3Application  [0;39m [2m:[0;39m Started ConsumerV3Application in 0.752 seconds (process running for 1.003)
+[2m2026-03-27T11:47:03.580-07:00[0;39m [32m INFO[0;39m [35m9383[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36me.n.c.consumerv3.QueueConsumerRunnerV3  [0;39m [2m:[0;39m consumer-v3 started for room.1..room.20
+[2m2026-03-27T11:47:07.878-07:00[0;39m [32m INFO[0;39m [35m9383[0;39m [2m---[0;39m [2m[pool-2-thread-1][0;39m [2m[0;39m[36mcom.zaxxer.hikari.HikariDataSource      [0;39m [2m:[0;39m HikariPool-1 - Starting...
+[2m2026-03-27T11:47:07.997-07:00[0;39m [32m INFO[0;39m [35m9383[0;39m [2m---[0;39m [2m[pool-2-thread-1][0;39m [2m[0;39m[36mcom.zaxxer.hikari.pool.HikariPool       [0;39m [2m:[0;39m HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@59418ff7
+[2m2026-03-27T11:47:07.998-07:00[0;39m [32m INFO[0;39m [35m9383[0;39m [2m---[0;39m [2m[pool-2-thread-1][0;39m [2m[0;39m[36mcom.zaxxer.hikari.HikariDataSource      [0;39m [2m:[0;39m HikariPool-1 - Start completed.
+[2m2026-03-27T11:47:37.808-07:00[0;39m [33m WARN[0;39m [35m9383[0;39m [2m---[0;39m [2m[pool-2-thread-2][0;39m [2m[0;39m[36me.n.c.consumerv3.PersistenceService     [0;39m [2m:[0;39m DB batch write failed: PreparedStatementCallback; SQL [INSERT INTO room_user_activity (room_id, user_id, last_activity_ts) VALUES (?, ?, ?) ON CONFLICT (room_id, user_id) DO UPDATE SET last_activity_ts = GREATEST(room_user_activity.last_activity_ts, EXCLUDED.last_activity_ts)]; Batch entry 105 INSERT INTO room_user_activity (room_id, user_id, last_activity_ts) VALUES (('15'), ('1974'), ('2026-03-27 11:47:07.795685-07')) ON CONFLICT (room_id, user_id) DO UPDATE SET last_activity_ts = GREATEST(room_user_activity.last_activity_ts, EXCLUDED.last_activity_ts) was aborted: ERROR: deadlock detected
+  Detail: Process 9409 waits for ShareLock on transaction 2692359; blocked by process 9411.
+Process 9411 waits for ShareLock on transaction 2692356; blocked by process 9409.
+  Hint: See server log for query details.
+  Where: while inserting index tuple (33,131) in relation "room_user_activity"  Call getNextException to see other errors in the batch.
+[2m2026-03-27T11:47:39.034-07:00[0;39m [33m WARN[0;39m [35m9383[0;39m [2m---[0;39m [2m[pool-2-thread-1][0;39m [2m[0;39m[36me.n.c.consumerv3.PersistenceService     [0;39m [2m:[0;39m DB batch write failed: PreparedStatementCallback; SQL [INSERT INTO room_user_activity (room_id, user_id, last_activity_ts) VALUES (?, ?, ?) ON CONFLICT (room_id, user_id) DO UPDATE SET last_activity_ts = GREATEST(room_user_activity.last_activity_ts, EXCLUDED.last_activity_ts)]; Batch entry 474 INSERT INTO room_user_activity (room_id, user_id, last_activity_ts) VALUES (('11'), ('1326'), ('2026-03-27 11:47:07.79525-07')) ON CONFLICT (room_id, user_id) DO UPDATE SET last_activity_ts = GREATEST(room_user_activity.last_activity_ts, EXCLUDED.last_activity_ts) was aborted: ERROR: deadlock detected
+  Detail: Process 9412 waits for ShareLock on transaction 2692378; blocked by process 9410.
+Process 9410 waits for ShareLock on transaction 2692377; blocked by process 9412.
+  Hint: See server log for query details.
+  Where: while inserting index tuple (32,158) in relation "room_user_activity"  Call getNextException to see other errors in the batch.
+[2m2026-03-27T11:47:40.183-07:00[0;39m [33m WARN[0;39m [35m9383[0;39m [2m---[0;39m [2m[pool-2-thread-3][0;39m [2m[0;39m[36me.n.c.consumerv3.PersistenceService     [0;39m [2m:[0;39m DB batch write failed: PreparedStatementCallback; SQL [INSERT INTO room_user_activity (room_id, user_id, last_activity_ts) VALUES (?, ?, ?) ON CONFLICT (room_id, user_id) DO UPDATE SET last_activity_ts = GREATEST(room_user_activity.last_activity_ts, EXCLUDED.last_activity_ts)]; Batch entry 405 INSERT INTO room_user_activity (room_id, user_id, last_activity_ts) VALUES (('11'), ('1587'), ('2026-03-27 11:47:07.795823-07')) ON CONFLICT (room_id, user_id) DO UPDATE SET last_activity_ts = GREATEST(room_user_activity.last_activity_ts, EXCLUDED.last_activity_ts) was aborted: ERROR: deadlock detected
+  Detail: Process 9410 waits for ShareLock on transaction 2692379; blocked by process 9411.
+Process 9411 waits for ShareLock on transaction 2692378; blocked by process 9410.
+  Hint: See server log for query details.
+  Where: while inserting index tuple (13,151) in relation "room_user_activity"  Call getNextException to see other errors in the batch.

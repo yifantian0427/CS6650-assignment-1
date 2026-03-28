@@ -1,0 +1,172 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+[32m :: Spring Boot :: [39m              [2m (v3.2.5)[0;39m
+
+[2m2026-03-27T11:35:17.078-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36me.n.c.consumerv3.ConsumerV3Application  [0;39m [2m:[0;39m Starting ConsumerV3Application v1.0-SNAPSHOT using Java 23.0.1 with PID 98731 (/Users/yifantian/CS 6650/cs6650 assignment1/consumer-v3/target/consumer-v3-1.0-SNAPSHOT.jar started by yifantian in /Users/yifantian/CS 6650/cs6650 assignment1/consumer-v3)
+[2m2026-03-27T11:35:17.081-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36me.n.c.consumerv3.ConsumerV3Application  [0;39m [2m:[0;39m No active profile set, falling back to 1 default profile: "default"
+[2m2026-03-27T11:35:17.542-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36mo.s.b.w.embedded.tomcat.TomcatWebServer [0;39m [2m:[0;39m Tomcat initialized with port 8082 (http)
+[2m2026-03-27T11:35:17.547-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36mo.apache.catalina.core.StandardService  [0;39m [2m:[0;39m Starting service [Tomcat]
+[2m2026-03-27T11:35:17.547-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36mo.apache.catalina.core.StandardEngine   [0;39m [2m:[0;39m Starting Servlet engine: [Apache Tomcat/10.1.20]
+[2m2026-03-27T11:35:17.557-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36mo.a.c.c.C.[Tomcat].[localhost].[/]      [0;39m [2m:[0;39m Initializing Spring embedded WebApplicationContext
+[2m2026-03-27T11:35:17.558-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36mw.s.c.ServletWebServerApplicationContext[0;39m [2m:[0;39m Root WebApplicationContext: initialization completed in 440 ms
+[2m2026-03-27T11:35:17.611-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36me.n.c.consumerv3.PersistenceService     [0;39m [2m:[0;39m Persistence writers started: 4
+[2m2026-03-27T11:35:17.841-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36mo.s.b.w.embedded.tomcat.TomcatWebServer [0;39m [2m:[0;39m Tomcat started on port 8082 (http) with context path ''
+[2m2026-03-27T11:35:17.849-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36me.n.c.consumerv3.ConsumerV3Application  [0;39m [2m:[0;39m Started ConsumerV3Application in 0.937 seconds (process running for 1.133)
+[2m2026-03-27T11:35:17.880-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36me.n.c.consumerv3.QueueConsumerRunnerV3  [0;39m [2m:[0;39m consumer-v3 started for room.1..room.20
+[2m2026-03-27T11:35:24.893-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[pool-2-thread-2][0;39m [2m[0;39m[36mcom.zaxxer.hikari.HikariDataSource      [0;39m [2m:[0;39m HikariPool-1 - Starting...
+[2m2026-03-27T11:35:24.929-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[pool-2-thread-2][0;39m [2m[0;39m[36mcom.zaxxer.hikari.pool.HikariPool       [0;39m [2m:[0;39m HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2d3b3d4c
+[2m2026-03-27T11:35:24.930-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[pool-2-thread-2][0;39m [2m[0;39m[36mcom.zaxxer.hikari.HikariDataSource      [0;39m [2m:[0;39m HikariPool-1 - Start completed.
+[2m2026-03-27T11:35:24.944-07:00[0;39m [33m WARN[0;39m [35m98731[0;39m [2m---[0;39m [2m[pool-2-thread-2][0;39m [2m[0;39m[36me.n.c.consumerv3.PersistenceService     [0;39m [2m:[0;39m DB batch write failed: PreparedStatementCallback; bad SQL grammar [INSERT INTO chat_messages (message_id, room_id, user_id, username, message, message_type, message_ts, server_id, client_ip, ingested_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, now()) ON CONFLICT (message_id) DO NOTHING]
+org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [INSERT INTO chat_messages (message_id, room_id, user_id, username, message, message_type, message_ts, server_id, client_ip, ingested_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, now()) ON CONFLICT (message_id) DO NOTHING]
+	at org.springframework.jdbc.support.SQLStateSQLExceptionTranslator.doTranslate(SQLStateSQLExceptionTranslator.java:112)
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:107)
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:116)
+	at org.springframework.jdbc.core.JdbcTemplate.translateException(JdbcTemplate.java:1548)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:677)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:701)
+	at org.springframework.jdbc.core.JdbcTemplate.batchUpdate(JdbcTemplate.java:1101)
+	at edu.northeastern.cs6650.consumerv3.PersistenceService.flushBatch(PersistenceService.java:85)
+	at edu.northeastern.cs6650.consumerv3.PersistenceService.runWriterLoop(PersistenceService.java:68)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+Caused by: java.sql.BatchUpdateException: Batch entry 0 INSERT INTO chat_messages (message_id, room_id, user_id, username, message, message_type, message_ts, server_id, client_ip, ingested_at) VALUES (('aba58c6b-6534-41f4-8d75-c1341868d007'), ('1'), ('1681'), ('user1681'), ('hello-22'), ('TEXT'), ('2026-03-27 11:35:24.809427-07'), ('server-1'), ('/127.0.0.1:64938'), now()) ON CONFLICT (message_id) DO NOTHING was aborted: ERROR: permission denied for table chat_messages  Call getNextException to see other errors in the batch.
+	at org.postgresql.jdbc.BatchResultHandler.handleCompletion(BatchResultHandler.java:186)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:585)
+	at org.postgresql.jdbc.PgStatement.internalExecuteBatch(PgStatement.java:896)
+	at org.postgresql.jdbc.PgStatement.executeBatch(PgStatement.java:919)
+	at org.postgresql.jdbc.PgPreparedStatement.executeBatch(PgPreparedStatement.java:1685)
+	at com.zaxxer.hikari.pool.ProxyStatement.executeBatch(ProxyStatement.java:127)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeBatch(HikariProxyPreparedStatement.java)
+	at org.springframework.jdbc.core.JdbcTemplate.lambda$batchUpdate$4(JdbcTemplate.java:1117)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:658)
+	... 9 more
+Caused by: org.postgresql.util.PSQLException: ERROR: permission denied for table chat_messages
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2713)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2401)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:574)
+	... 16 more
+[2m2026-03-27T11:35:25.151-07:00[0;39m [33m WARN[0;39m [35m98731[0;39m [2m---[0;39m [2m[pool-2-thread-2][0;39m [2m[0;39m[36me.n.c.consumerv3.PersistenceService     [0;39m [2m:[0;39m DB batch write failed: PreparedStatementCallback; bad SQL grammar [INSERT INTO chat_messages (message_id, room_id, user_id, username, message, message_type, message_ts, server_id, client_ip, ingested_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, now()) ON CONFLICT (message_id) DO NOTHING]
+org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [INSERT INTO chat_messages (message_id, room_id, user_id, username, message, message_type, message_ts, server_id, client_ip, ingested_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, now()) ON CONFLICT (message_id) DO NOTHING]
+	at org.springframework.jdbc.support.SQLStateSQLExceptionTranslator.doTranslate(SQLStateSQLExceptionTranslator.java:112)
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:107)
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:116)
+	at org.springframework.jdbc.core.JdbcTemplate.translateException(JdbcTemplate.java:1548)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:677)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:701)
+	at org.springframework.jdbc.core.JdbcTemplate.batchUpdate(JdbcTemplate.java:1101)
+	at edu.northeastern.cs6650.consumerv3.PersistenceService.flushBatch(PersistenceService.java:85)
+	at edu.northeastern.cs6650.consumerv3.PersistenceService.runWriterLoop(PersistenceService.java:68)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+Caused by: java.sql.BatchUpdateException: Batch entry 0 INSERT INTO chat_messages (message_id, room_id, user_id, username, message, message_type, message_ts, server_id, client_ip, ingested_at) VALUES (('aba58c6b-6534-41f4-8d75-c1341868d007'), ('1'), ('1681'), ('user1681'), ('hello-22'), ('TEXT'), ('2026-03-27 11:35:24.809427-07'), ('server-1'), ('/127.0.0.1:64938'), now()) ON CONFLICT (message_id) DO NOTHING was aborted: ERROR: permission denied for table chat_messages  Call getNextException to see other errors in the batch.
+	at org.postgresql.jdbc.BatchResultHandler.handleCompletion(BatchResultHandler.java:186)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:585)
+	at org.postgresql.jdbc.PgStatement.internalExecuteBatch(PgStatement.java:896)
+	at org.postgresql.jdbc.PgStatement.executeBatch(PgStatement.java:919)
+	at org.postgresql.jdbc.PgPreparedStatement.executeBatch(PgPreparedStatement.java:1685)
+	at com.zaxxer.hikari.pool.ProxyStatement.executeBatch(ProxyStatement.java:127)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeBatch(HikariProxyPreparedStatement.java)
+	at org.springframework.jdbc.core.JdbcTemplate.lambda$batchUpdate$4(JdbcTemplate.java:1117)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:658)
+	... 9 more
+Caused by: org.postgresql.util.PSQLException: ERROR: permission denied for table chat_messages
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2713)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2401)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:574)
+	... 16 more
+[2m2026-03-27T11:35:25.558-07:00[0;39m [33m WARN[0;39m [35m98731[0;39m [2m---[0;39m [2m[pool-2-thread-2][0;39m [2m[0;39m[36me.n.c.consumerv3.PersistenceService     [0;39m [2m:[0;39m DB batch write failed: PreparedStatementCallback; bad SQL grammar [INSERT INTO chat_messages (message_id, room_id, user_id, username, message, message_type, message_ts, server_id, client_ip, ingested_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, now()) ON CONFLICT (message_id) DO NOTHING]
+org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [INSERT INTO chat_messages (message_id, room_id, user_id, username, message, message_type, message_ts, server_id, client_ip, ingested_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, now()) ON CONFLICT (message_id) DO NOTHING]
+	at org.springframework.jdbc.support.SQLStateSQLExceptionTranslator.doTranslate(SQLStateSQLExceptionTranslator.java:112)
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:107)
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:116)
+	at org.springframework.jdbc.core.JdbcTemplate.translateException(JdbcTemplate.java:1548)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:677)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:701)
+	at org.springframework.jdbc.core.JdbcTemplate.batchUpdate(JdbcTemplate.java:1101)
+	at edu.northeastern.cs6650.consumerv3.PersistenceService.flushBatch(PersistenceService.java:85)
+	at edu.northeastern.cs6650.consumerv3.PersistenceService.runWriterLoop(PersistenceService.java:68)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+Caused by: java.sql.BatchUpdateException: Batch entry 0 INSERT INTO chat_messages (message_id, room_id, user_id, username, message, message_type, message_ts, server_id, client_ip, ingested_at) VALUES (('aba58c6b-6534-41f4-8d75-c1341868d007'), ('1'), ('1681'), ('user1681'), ('hello-22'), ('TEXT'), ('2026-03-27 11:35:24.809427-07'), ('server-1'), ('/127.0.0.1:64938'), now()) ON CONFLICT (message_id) DO NOTHING was aborted: ERROR: permission denied for table chat_messages  Call getNextException to see other errors in the batch.
+	at org.postgresql.jdbc.BatchResultHandler.handleCompletion(BatchResultHandler.java:186)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:585)
+	at org.postgresql.jdbc.PgStatement.internalExecuteBatch(PgStatement.java:896)
+	at org.postgresql.jdbc.PgStatement.executeBatch(PgStatement.java:919)
+	at org.postgresql.jdbc.PgPreparedStatement.executeBatch(PgPreparedStatement.java:1685)
+	at com.zaxxer.hikari.pool.ProxyStatement.executeBatch(ProxyStatement.java:127)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeBatch(HikariProxyPreparedStatement.java)
+	at org.springframework.jdbc.core.JdbcTemplate.lambda$batchUpdate$4(JdbcTemplate.java:1117)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:658)
+	... 9 more
+Caused by: org.postgresql.util.PSQLException: ERROR: permission denied for table chat_messages
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2713)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2401)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:574)
+	... 16 more
+[2m2026-03-27T11:35:26.368-07:00[0;39m [33m WARN[0;39m [35m98731[0;39m [2m---[0;39m [2m[pool-2-thread-2][0;39m [2m[0;39m[36me.n.c.consumerv3.PersistenceService     [0;39m [2m:[0;39m DB batch write failed: PreparedStatementCallback; bad SQL grammar [INSERT INTO chat_messages (message_id, room_id, user_id, username, message, message_type, message_ts, server_id, client_ip, ingested_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, now()) ON CONFLICT (message_id) DO NOTHING]
+org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [INSERT INTO chat_messages (message_id, room_id, user_id, username, message, message_type, message_ts, server_id, client_ip, ingested_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, now()) ON CONFLICT (message_id) DO NOTHING]
+	at org.springframework.jdbc.support.SQLStateSQLExceptionTranslator.doTranslate(SQLStateSQLExceptionTranslator.java:112)
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:107)
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:116)
+	at org.springframework.jdbc.core.JdbcTemplate.translateException(JdbcTemplate.java:1548)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:677)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:701)
+	at org.springframework.jdbc.core.JdbcTemplate.batchUpdate(JdbcTemplate.java:1101)
+	at edu.northeastern.cs6650.consumerv3.PersistenceService.flushBatch(PersistenceService.java:85)
+	at edu.northeastern.cs6650.consumerv3.PersistenceService.runWriterLoop(PersistenceService.java:68)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+Caused by: java.sql.BatchUpdateException: Batch entry 0 INSERT INTO chat_messages (message_id, room_id, user_id, username, message, message_type, message_ts, server_id, client_ip, ingested_at) VALUES (('aba58c6b-6534-41f4-8d75-c1341868d007'), ('1'), ('1681'), ('user1681'), ('hello-22'), ('TEXT'), ('2026-03-27 11:35:24.809427-07'), ('server-1'), ('/127.0.0.1:64938'), now()) ON CONFLICT (message_id) DO NOTHING was aborted: ERROR: permission denied for table chat_messages  Call getNextException to see other errors in the batch.
+	at org.postgresql.jdbc.BatchResultHandler.handleCompletion(BatchResultHandler.java:186)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:585)
+	at org.postgresql.jdbc.PgStatement.internalExecuteBatch(PgStatement.java:896)
+	at org.postgresql.jdbc.PgStatement.executeBatch(PgStatement.java:919)
+	at org.postgresql.jdbc.PgPreparedStatement.executeBatch(PgPreparedStatement.java:1685)
+	at com.zaxxer.hikari.pool.ProxyStatement.executeBatch(ProxyStatement.java:127)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeBatch(HikariProxyPreparedStatement.java)
+	at org.springframework.jdbc.core.JdbcTemplate.lambda$batchUpdate$4(JdbcTemplate.java:1117)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:658)
+	... 9 more
+Caused by: org.postgresql.util.PSQLException: ERROR: permission denied for table chat_messages
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2713)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2401)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:574)
+	... 16 more
+[2m2026-03-27T11:35:27.423-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[ionShutdownHook][0;39m [2m[0;39m[36mcom.zaxxer.hikari.HikariDataSource      [0;39m [2m:[0;39m HikariPool-1 - Shutdown initiated...
+[2m2026-03-27T11:35:27.423-07:00[0;39m [33m WARN[0;39m [35m98731[0;39m [2m---[0;39m [2m[pool-2-thread-4][0;39m [2m[0;39m[36me.n.c.consumerv3.PersistenceService     [0;39m [2m:[0;39m DB batch write failed: Failed to obtain JDBC Connection
+org.springframework.jdbc.CannotGetJdbcConnectionException: Failed to obtain JDBC Connection
+	at org.springframework.jdbc.datasource.DataSourceUtils.getConnection(DataSourceUtils.java:84)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:653)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:701)
+	at org.springframework.jdbc.core.JdbcTemplate.batchUpdate(JdbcTemplate.java:1101)
+	at edu.northeastern.cs6650.consumerv3.PersistenceService.flushBatch(PersistenceService.java:85)
+	at edu.northeastern.cs6650.consumerv3.PersistenceService.runWriterLoop(PersistenceService.java:68)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+Caused by: java.sql.SQLException: HikariDataSource HikariDataSource (HikariPool-1) has been closed.
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:96)
+	at org.springframework.jdbc.datasource.DataSourceUtils.fetchConnection(DataSourceUtils.java:160)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doGetConnection(DataSourceUtils.java:118)
+	at org.springframework.jdbc.datasource.DataSourceUtils.getConnection(DataSourceUtils.java:81)
+	... 10 more
+[2m2026-03-27T11:35:27.425-07:00[0;39m [32m INFO[0;39m [35m98731[0;39m [2m---[0;39m [2m[ionShutdownHook][0;39m [2m[0;39m[36mcom.zaxxer.hikari.HikariDataSource      [0;39m [2m:[0;39m HikariPool-1 - Shutdown completed.
